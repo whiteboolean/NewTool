@@ -35,10 +35,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':NewkTool:ToolsLib')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     //  友盟 分析
     compile 'com.umeng.analytics:analytics:latest.integration'
+    compile project(':NewkTool:ToolsLib')
 }
 
 allprojects {

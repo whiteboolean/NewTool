@@ -2,19 +2,27 @@
 
 
 buildscript {
-    apply from: "config.gradle"
+    apply from: "../NewkTool/config.gradle"
 //    apply from: "../kTool/config.gradle"
-    addRepos(repositories)
+//    addRepos(repositories)
+    repositories {
+        google()
+        jcenter()
+    }
     dependencies {
         classpath deps.classpath.gradle_plugin_android
         classpath deps.classpath.gradle_plugin_kotlin
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
 //        classpath deps.classpath.freeline
     }
 }
 
 allprojects {
-    addRepos(repositories)
+    repositories {
+        google()
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
 }
 
 task clean(type: Delete) {
