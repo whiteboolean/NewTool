@@ -28,7 +28,7 @@ android {
 }
 
 dependencies {
-    compile project(':NewkTool:Base')
+    implementation project(':NewkTool:Base')
     compile deps.okgo
     compile deps.okHttp
     compile deps.fastJson
