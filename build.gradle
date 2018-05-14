@@ -2,7 +2,7 @@
 
 
 buildscript {
-    apply from: "../NewkTool/config.gradle"
+    apply from: "config.gradle"
 //    apply from: "../kTool/config.gradle"
 //    addRepos(repositories)
     repositories {
@@ -18,11 +18,7 @@ buildscript {
 }
 
 allprojects {
-    repositories {
-        google()
-        jcenter()
-        maven { url "https://jitpack.io" }
-    }
+    addRepos(repositories)
 }
 
 task clean(type: Delete) {
