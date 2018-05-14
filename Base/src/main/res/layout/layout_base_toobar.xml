@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mtool.toolslib.base.view.custom.toolbar.ToolBar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:background="@color/colorAccent"
+    android:elevation="2dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/left_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/middle_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true">
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/right_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+</com.mtool.toolslib.base.view.custom.toolbar.ToolBar>

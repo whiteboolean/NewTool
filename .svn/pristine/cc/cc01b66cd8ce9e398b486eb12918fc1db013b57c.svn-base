@@ -1,0 +1,68 @@
+package com.mtool.toolslib.view.custom.zother;
+
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+
+/**
+ * 用于RecycleView的分割线，左右边距都是15dp
+ * Created by q2366 on 2016/2/29.
+ */
+public class RVDividerWidthMargin extends RecyclerView.ItemDecoration {
+
+    private int margin = 0;
+    private int mStrokeWidth = 0;
+    private boolean needDraw = true;
+    private int firstMargin = 0;
+
+    private Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+    public RVDividerWidthMargin(Context context) {
+        this(context, 0, 1, true, 0);
+    }
+
+    public RVDividerWidthMargin(Context context, int margin, int width, boolean needDraw, int firstMargin) {
+        final float DENSITY = context.getResources().getDisplayMetrics().density;
+        this.margin = (int) (DENSITY * margin);
+        this.firstMargin = firstMargin;
+
+        this.needDraw = needDraw;
+
+        mStrokeWidth = (int) (DENSITY * 0.5 * width);
+        if (mStrokeWidth < 1) mStrokeWidth = 1;
+
+        mPaint.setColor(0xffdddddd);
+        mPaint.setStrokeWidth(mStrokeWidth);
+    }
+
+    @Override
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        if (!"skip".equals(view.getTag())) {
+            if (firstMargin == 0) {
+                outRect.set(0, 0, mStrokeWidth, 0);
+            } else {
+                RecyclerView.ViewHolder holder = parent.findContainingViewHolder(view);
+                if (holder != null && holder.getAdapterPosition() == 0) {
+                    outRect.set(firstMargin, 0, mStrokeWidth, 0);
+                } else {
+                    outRect.set(0, 0, mStrokeWidth, 0);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+        if (needDraw) {
+            int count = parent.getChildCount();
+            int bottom = parent.getHeight() - margin;
+            for (int i = 0; i < count; i++) {
+                int r = parent.getChildAt(i).getRight();
+                c.drawLine(r, r, margin, bottom, mPaint);
+            }
+        }
+    }
+}

@@ -1,0 +1,46 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.ext.build_versions.compile_sdk
+    buildToolsVersion rootProject.ext.build_versions.build_tools
+
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.build_versions.min_sdk
+        targetSdkVersion rootProject.ext.build_versions.target_sdk
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
+    }
+
+
+    sourceSets {
+        main {
+            assets.srcDirs = ['assets']
+        }
+    }
+}
+
+dependencies {
+    compile deps.support.design
+    compile deps.support.v4
+    compile deps.kotlin.reflect
+    compile deps.kotlin.jre
+
+    compile deps.multiDex
+
+}
+
+allprojects {
+    addRepos(repositories)
+
+}
+repositories {
+    mavenCentral()
+}

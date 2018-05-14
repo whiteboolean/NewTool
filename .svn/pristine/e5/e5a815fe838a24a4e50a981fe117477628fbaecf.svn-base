@@ -1,0 +1,104 @@
+package com.mtool.toolslib.core
+
+
+import java.text.DecimalFormat
+import java.util.ArrayList
+
+
+fun String.castToPriceWithoutSimple(): String {
+    return if (this == null) {
+        "0"
+    } else {
+        if (this.isEmpty()) {
+            "0"
+        } else {
+            val mDecimalFormat = DecimalFormat(
+                    "#,###,###,###.####")
+            val BalanceChange = mDecimalFormat.format(java.lang.Double
+                    .parseDouble(this))// 厘模式
+            BalanceChange
+        }
+
+    }
+}
+
+fun String.castToPrice(): String {
+    return if (this == null) {
+        "¥ " + "0.00"
+    } else {
+        if (this.isEmpty()) {
+            "¥ " + "0.00"
+        } else {
+            val mDecimalFormat = DecimalFormat(
+                    "#,###,###,###.####")
+            val BalanceChange = mDecimalFormat.format(java.lang.Double
+                    .parseDouble(this))// 厘模式
+            "¥ " + BalanceChange
+        }
+
+    }
+}
+
+
+fun Int?.castToPrice(): String {
+    return if (this != null) {
+        val mDecimalFormat = DecimalFormat(
+                "#,###,###,###.####")
+        val BalanceChange = mDecimalFormat.format(this.toLong())// 厘模式
+        "¥ " + BalanceChange
+    } else {
+        "¥ " + "0.00"
+    }
+}
+
+
+fun Double?.castToPrice(): String {
+    return if (this != null) {
+        val mDecimalFormat = DecimalFormat(
+                "#,###,###,###.####")
+        val BalanceChange = mDecimalFormat.format(this)// 厘模式
+        "¥ " + BalanceChange
+    } else {
+        "¥ " + "0.00"
+    }
+}
+
+fun Long?.castToPrice(): String {
+    return if (this != null) {
+        val mDecimalFormat = DecimalFormat(
+                "#,###,###,###.####")
+        val BalanceChange = mDecimalFormat.format(this)// 厘模式
+        "¥ " + BalanceChange
+    } else {
+        "¥ " + "0.00"
+    }
+}
+
+
+fun String.castToBankCard(divider: String): String {
+    return if (this.isEmpty()) {
+        "0000${divider}0000${divider}0000${divider}0000"
+    } else {
+        val totalLengh = this.length
+        val gap = 3
+        var currentIndex = 0
+        val totalCoords = mutableListOf<String>()
+        val groupCoords = mutableListOf<Char>()
+        for (item in this.toCharArray()) {
+            if (currentIndex == gap) {
+                groupCoords.add(item)
+
+                totalCoords.add(groupCoords.joinToString(""))
+                groupCoords.clear()
+                currentIndex = 0
+            } else {
+                groupCoords.add(item)
+                currentIndex++
+            }
+        }
+        val afterFormat = totalCoords.joinToString(divider)
+
+        afterFormat
+    }
+}
+

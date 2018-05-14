@@ -1,0 +1,8 @@
+package com.mtool.toolslib.model.autoChangeIP
+
+/**
+ * Created by JayCruz on 2018/1/5.
+ */
+class AutoChangeIp {
+
+}

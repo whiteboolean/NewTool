@@ -1,0 +1,17 @@
+<resources>
+    <string name="iconfont_1">&#xe780;</string>
+    <string name="iconfont_2">&#xe78f;</string>
+    <string name="iconfont_3">&#xe77f;</string>
+    <string name="iconfont_4">&#xe781;</string>
+    <string name="iconfont_5">&#xe78e;</string>
+    <string name="iconfont_6">&#xe77b;</string>
+    <string name="iconfont_7">&#xe77c;</string>
+    <string name="iconfont_8">&#xe782;</string>
+    <string name="iconfont_9">&#xe77d;</string>
+
+
+    <string name="iconfont_view_list">&#xe981;</string>
+
+    <string name="iconfont_view_test">&#xe683;</string>
+
+</resources>

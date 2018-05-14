@@ -1,0 +1,84 @@
+package com.mtool.toolslib.utils;
+
+import android.util.Log;
+
+import java.text.DecimalFormat;
+
+public class MoneyFormatUtil {
+
+    public static String InVisiablePayment() {
+        return "¥ " + "*,***,***.**";
+    }
+
+
+    public static String CostStringToPrice(String PriceAmount) {
+        try {
+
+            if (PriceAmount == null) {
+                return "¥ " + "0.00";
+            } else {
+                if (PriceAmount.isEmpty()) {
+                    return "¥ " + "0.00";
+                } else {
+                    DecimalFormat mDecimalFormat = new DecimalFormat(
+                            "#,###,###,###.####");
+                    String BalanceChange = mDecimalFormat.format(Double
+                            .parseDouble(PriceAmount));// 厘模式
+                    return "¥ " + BalanceChange;
+                }
+
+            }
+        } catch (NumberFormatException e) {
+            return "¥ " + "0.00";
+        }
+
+    }
+
+
+    public static String CostIntegerToPrice(int PriceAmount) {
+        try {
+            DecimalFormat mDecimalFormat = new DecimalFormat(
+                    "#,###,###,###.####");
+            String BalanceChange = mDecimalFormat.format(PriceAmount);// 厘模式
+            return "¥ " + BalanceChange;
+        } catch (NumberFormatException e) {
+            return "¥ " + "0.00";
+        }
+    }
+
+    public static String CostDoubleToPrice(Double PriceAmount) {
+        try {
+            DecimalFormat mDecimalFormat = new DecimalFormat(
+                    "#,###,###,###.####");
+            String BalanceChange = mDecimalFormat.format(PriceAmount);// 厘模式
+            return "¥ " + BalanceChange;
+        } catch (NumberFormatException e) {
+            return "¥ " + "0.00";
+        }
+    }
+
+
+    public static String CostLongToPrice(long PriceAmount) {
+        try {
+            DecimalFormat mDecimalFormat = new DecimalFormat(
+                    "#,###,###,###.####");
+            String BalanceChange = mDecimalFormat.format(PriceAmount);// 厘模式
+            return "¥ " + BalanceChange;
+        } catch (NumberFormatException e) {
+            return "¥ " + "0.00";
+        }
+    }
+
+    public static String CostIntegerWithoutPrice(int PriceAmount) {
+        try {
+            DecimalFormat mDecimalFormat = new DecimalFormat(
+                    "#,###,###,###.####");
+            Double price = ((double) PriceAmount) / 10000;
+            Log.e("CostIntegerWithoutPrice", "CostIntegerWithoutPrice = " + price);
+            String BalanceChange = mDecimalFormat.format(price);// 厘模式
+            return BalanceChange;
+        } catch (NumberFormatException e) {
+            return "0.00";
+        }
+    }
+}

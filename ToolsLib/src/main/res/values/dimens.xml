@@ -1,0 +1,13 @@
+<resources>
+
+    <dimen name="coner">10dp</dimen>
+    <dimen name="normal_h">120px</dimen>
+    <dimen name="actionBarSize">50dp</dimen>
+    <dimen name="elevation1">1dp</dimen>
+    <dimen name="elevation2">2dp</dimen>
+    <dimen name="elevation3">4dp</dimen>
+    <dimen name="elevation4">6dp</dimen>
+    <dimen name="three_grid_unit">10dp</dimen>
+    <dimen name="one_and_a_half_grid_unit">5dp</dimen>
+
+</resources>

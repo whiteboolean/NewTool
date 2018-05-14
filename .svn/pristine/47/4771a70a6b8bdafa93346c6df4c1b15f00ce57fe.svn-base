@@ -1,0 +1,61 @@
+package com.mtool.toolslib.network.activity.netkit
+
+import android.app.Activity
+import android.app.Dialog
+import android.support.design.widget.BottomSheetDialog
+import android.view.View
+import com.mtool.toolslib.network.R
+import kotlinx.android.synthetic.main.layout_loading_view2.view.*
+
+/**
+ * Created by buck on 2017/10/9.
+ */
+
+object DialogUtils {
+
+    interface DialogResult {
+        fun onDialogResult(result: Any)
+    }
+
+    fun showLoadingDialog(act: Activity, msg: String, cancelable: Boolean, cancelBlock: (() -> Unit)? = null): Dialog {
+        val view = act.layoutInflater.inflate(R.layout.layout_loading_view2, null)
+
+        view.tv.text = msg
+
+        val dialog = LoadingDialog(act)
+        dialog.setContentView(view)
+        dialog.setCancelable(cancelable)
+        dialog.show()
+
+        if (cancelBlock != null) dialog.setOnDismissListener { cancelBlock() }
+
+        return dialog
+    }
+
+    fun showUserPictureSelectDialog(act: Activity, result: DialogResult?) {
+        val view = act.layoutInflater.inflate(R.layout.layout_dialog_picture_select, null)
+
+        val dialog = BottomSheetDialog(act, R.style.button_sheet_dialog_transparent)
+        dialog.setContentView(view)
+
+        dialog.show()
+
+        val click = View.OnClickListener { v ->
+            dialog.dismiss()
+
+            if (result == null) return@OnClickListener
+
+            val id = v.id
+
+            if (id == R.id.select_photo) {
+                result.onDialogResult(1)
+            } else if (id == R.id.take_photo) {
+                result.onDialogResult(0)
+            }
+        }
+
+        view.findViewById<View>(R.id.take_photo).setOnClickListener(click)
+        view.findViewById<View>(R.id.select_photo).setOnClickListener(click)
+        view.findViewById<View>(R.id.cancel).setOnClickListener(click)
+    }
+}

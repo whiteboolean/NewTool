@@ -1,0 +1,101 @@
+package com.mtool.toolslib.base.view.activity;
+
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+
+import com.mtool.toolslib.base.R;
+import com.mtool.toolslib.base.view.custom.webView.webViewAndroid;
+
+public class WebViewActivity extends BaseActivity {
+    public static final String ACTION_HTML = "com.whh.www.html";
+    public static final String INTENT_URL = "url";
+    private static final String TAG = "WebActivity";
+    FrameLayout flWv;
+    webViewAndroid web;
+    ProgressBar pb;
+    private String url;
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            hideSystemNavigationBar();
+        } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            // 加入竖屏要处理的代码
+            showSystemNavigationBar();
+        }
+    }
+
+    private void showSystemNavigationBar() {
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.VISIBLE;
+        decorView.setSystemUiVisibility(uiOptions);
+    }
+
+    private void hideSystemNavigationBar() {
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+    }
+
+
+    @Override
+    protected void initView() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        setContentView(R.layout.activity_web_view);
+
+        url = getIntent().getStringExtra(INTENT_URL);
+
+        web = new webViewAndroid(this);
+        flWv = (FrameLayout) findViewById(R.id.fl_wv);
+        flWv.addView(web, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        View bg_errorpage = findViewById(R.id.bg_errorpage);
+        pb = (ProgressBar) findViewById(R.id.pb);
+
+        web.setProgressBar(pb);
+        if (url != null) {
+            if (!url.isEmpty()) {
+                if (!(url.contains("https://") || url.contains("http://"))) {
+                    url = "http://" + url;
+                }
+                web.setErrorPage(bg_errorpage, false);
+                web.loadUrl(url);
+            } else {
+                web.setErrorPage(bg_errorpage, true);
+            }
+        } else {
+            web.setErrorPage(bg_errorpage, true);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        web.onBackPressed();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        web.finish();
+    }
+
+    @Override
+    protected void initVariable() {
+
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+}
+

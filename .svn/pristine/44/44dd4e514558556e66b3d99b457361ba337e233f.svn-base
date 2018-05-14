@@ -1,0 +1,42 @@
+package com.mtool.toolslib.utils;
+
+import android.content.Context;
+import android.widget.ImageView;
+
+import com.youth.banner.loader.ImageLoaderInterface;
+
+/**
+ * Created by gerry
+ */
+public abstract class ImageLoader implements ImageLoaderInterface<ImageView> {
+
+
+    @Override
+    public ImageView createImageView(Context context) {
+        ImageView imageView = new ImageView(context);
+        return imageView;
+    }
+//    public static void load(Context context, String url, ImageView iv) {
+//        try {
+//            Glide.with(context).load(url).placeholder(R.drawable.loading_pic).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(iv);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    public static void load(Activity activity, String url, ImageView iv) {
+//        try {
+//            Glide.with(activity).load(url).placeholder(R.drawable.loading_pic).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(iv);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    public static void load(Fragment fragment, String url, ImageView iv) {
+//        try {
+//            Glide.with(fragment).load(url).placeholder(R.drawable.loading_pic).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(iv);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+}

@@ -1,0 +1,348 @@
+package com.mtool.toolslib.view.activity
+
+import android.annotation.TargetApi
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
+import android.graphics.Color
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import android.webkit.*
+import android.widget.Toast
+import com.mtool.toolslib.R
+import com.mtool.toolslib.base.core.ext.isNotNull
+import com.mtool.toolslib.base.core.ext.setVisibility
+import com.mtool.toolslib.network.activity.activity.BaseStylesActivity
+import com.mtool.toolslib.network.activity.netkit.get
+import com.mtool.toolslib.view.custom.StatusView
+import kotlinx.android.synthetic.main.activity_web_view_n.*
+import org.jetbrains.anko.startActivity
+import java.io.File
+import java.util.*
+import org.jetbrains.anko.toast
+
+/**
+ * Created by JayCruz on 2018/3/12.
+ */
+class WebViewCompleteActivity : BaseStylesActivity() {
+    companion object {
+        private val FILE_CHOOSER_RESULT_CODE = 10000
+        val ACTION_HTML = "com.whh.www.html"
+        val INTENT_URL = "url"
+        val INTENT_TITLE = "title"
+        val INTENT_SUB_TITLE = "subTitle"
+        val INTENT_ID = "id"
+        val INTENT_SHOW_TITLE_BAR = "title_bar"
+
+        var SHOW_TITLE_BAR = true
+        fun clearCookies(context: Context) {
+            val cookieSyncMngr = CookieSyncManager.createInstance(context)
+            val cookieManager = CookieManager.getInstance()
+            cookieManager.removeAllCookie()
+        }
+    }
+
+    fun loadURL() {
+        var url = intent.getStringExtra(INTENT_URL)
+        webview.setErrorPage(initErrorNetWork(url))
+        webview.setLoginCallBack {
+            toast("用户登陆失效，请重新登入")
+            finish()
+        }
+        if (url != null && url.isNotEmpty()) {
+            if ((!url.contains("https://") || url.contains("http://"))) {
+                url = "http://$url"
+            }
+            webview.loadUrl(url)
+        } else {
+            toast("暂未开放")
+            finish()
+        }
+    }
+
+    /***
+     * 网站错误
+     */
+    fun initErrorNetWork(url: String): View {
+        lv_status_view
+                .setInitStatus(StatusView.currentStatus.TYPE_NETWORK)
+                .setTitleMessage("Opps! 网站出错了")
+                .setContentMessage(
+                        "工程师正在加紧处理中！\n$url")
+                .setRefreshAction {
+                    loadURL()
+                }
+                .showView()
+        return lv_status_view
+    }
+
+    override fun initView() {
+        SHOW_TITLE_BAR = intent.getBooleanExtra(INTENT_SHOW_TITLE_BAR, true)
+        initStatusBar()
+        setContentView(R.layout.activity_web_view_n)
+
+        initWebView()
+        initToolBar()
+        setTitleBar()
+        loadURL()
+        initLongClick()
+        webview.setProgressBar(pb)
+
+        if ("客服" == title) {
+            AndroidBug54971Workaround.assistActivity(findViewById(R.id.content))
+        }
+    }
+
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        SHOW_TITLE_BAR = intent.getBooleanExtra(INTENT_SHOW_TITLE_BAR, true)
+
+        if (SHOW_TITLE_BAR) {
+            if (this.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                hideSystemNavigationBar()
+                toolbar.isNotNull {
+                    it.visibility = View.GONE
+                }
+            } else if (this.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                // 加入竖屏要处理的代码
+                showSystemNavigationBar()
+                initStatusBar()
+                toolbar.isNotNull {
+                    it.visibility = View.VISIBLE
+                }
+            }
+        } else {
+            toolbar.isNotNull {
+                it.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun showSystemNavigationBar() {
+        val decorView = window.decorView
+        val uiOptions = View.VISIBLE
+        decorView.systemUiVisibility = uiOptions
+    }
+
+    private fun hideSystemNavigationBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_IMMERSIVE
+                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION)
+    }
+
+
+    private fun setTitleBar() {
+        val webTitle = intent.getStringExtra(INTENT_TITLE)
+        val webSubTitle = intent.getStringExtra(INTENT_SUB_TITLE)
+
+        title = if (webSubTitle.isNullOrEmpty()) {
+            webTitle
+        } else {
+            webTitle + webSubTitle
+        }
+    }
+
+    private fun initWebView() {
+        webview.webChromeClient = object : WebChromeClient() {
+            override fun onProgressChanged(view: WebView, progress: Int) {
+                pb.visibility = View.VISIBLE
+                pb.progress = progress
+                if (progress == 100)
+                    pb.visibility = View.GONE
+            }
+
+            override fun onJsAlert(view: WebView, url: String, message: String,
+                                   result: JsResult): Boolean {
+                //加这段可以证webview中的alert弹出来
+                return super.onJsAlert(view, url, message, result)
+            }
+
+            // For Android < 3.0
+            fun openFileChooser(valueCallback: ValueCallback<Uri>) {
+                uploadTypeAboveL = false
+                uploadMessage = valueCallback
+                openImageChooserActivity()
+            }
+
+            // For Android  >= 3.0
+            fun openFileChooser(valueCallback: ValueCallback<Uri>, acceptType: String) {
+                uploadTypeAboveL = false
+                uploadMessage = valueCallback
+                openImageChooserActivity()
+            }
+
+            //For Android  >= 4.1
+            fun openFileChooser(valueCallback: ValueCallback<Uri>, acceptType: String, capture: String) {
+                uploadTypeAboveL = false
+                uploadMessage = valueCallback
+                openImageChooserActivity()
+            }
+
+            // For Android >= 5.0
+            override fun onShowFileChooser(webView: WebView, filePathCallback: ValueCallback<Array<Uri>>, fileChooserParams: WebChromeClient.FileChooserParams): Boolean {
+                uploadTypeAboveL = true
+                uploadMessageAboveL = filePathCallback
+                openImageChooserActivity()
+                return true
+            }
+        }
+    }
+
+    private fun initLongClick() {
+        webview.setOnLongClickListener { v ->
+            val result = (v as WebView).hitTestResult
+            val type = result.type
+            if (type == WebView.HitTestResult.IMAGE_TYPE) {
+                setDataPopup(result.extra)
+            }
+            false
+        }
+    }
+
+    /***
+     * 设置状态栏 StatusBar
+     * 游戏类的 统一隐藏
+     * 其他类的 显示
+     */
+    private fun initStatusBar() {
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
+        if (!SHOW_TITLE_BAR) {
+            requestWindowFeature(Window.FEATURE_NO_TITLE)
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        }
+    }
+
+    /***
+     * 设置 工具类 TOOL BAR
+     * 游戏类的 统一隐藏
+     * 其他类的 显示
+     */
+    private fun initToolBar(){
+        if (SHOW_TITLE_BAR) {
+            setFullScreenMode(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        } else {
+            toolbar.isNotNull {
+                it.visibility = View.GONE
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        webview.onBackPressed(!SHOW_TITLE_BAR)
+    }
+
+
+    public override fun onDestroy() {
+        super.onDestroy()
+        try {
+            finish()
+            clearCookies(this)
+        } catch (ex: Exception) {
+        }
+    }
+
+    override fun initData() {
+
+    }
+
+    /***
+     * 客服系统图片上传机制 相关代码
+     */
+
+    fun setDataPopup(imgUrl: String) {
+        val fileName1 = UUID.randomUUID().toString()
+
+        val downloadPath = Environment.getExternalStorageDirectory().absolutePath + "/Download/"
+        val downloadFileName = "$fileName1.png"
+
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("点击确定保存图片")
+        builder.setPositiveButton("确定") { dialog, which -> saveImage(imgUrl, downloadPath, downloadFileName) }
+        builder.setNeutralButton("取消") { dialog, which -> dialog.dismiss() }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    /***
+     * 照片下载并存放SD卡路径
+     */
+    private fun saveImage(imgUrl: String, destFileDir: String, destFileName: String) {
+        get(imgUrl, "")
+                .FileConvert(File::class, destFileDir, destFileName)
+                .onSuccess { target, response, extraInfo, ignore ->
+                    target.isNotNull {
+                        val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+                        val uri = Uri.fromFile(it)
+                        intent.data = uri
+                        this.sendBroadcast(intent)
+                        Toast.makeText(this, "保存成功", Toast.LENGTH_LONG).show()
+                    }
+                }
+                .onError { ex, response, extraInfo, ignore ->
+                    Toast.makeText(this, "保存失败", Toast.LENGTH_LONG).show()
+                }.end()
+
+    }
+
+    private fun openImageChooserActivity() {
+        val i = Intent(Intent.ACTION_GET_CONTENT)
+        i.addCategory(Intent.CATEGORY_OPENABLE)
+        i.type = "image/*"
+        startActivityForResult(Intent.createChooser(i, "Image Chooser"), FILE_CHOOSER_RESULT_CODE)
+    }
+
+    private val FILE_CHOOSER_RESULT_CODE = 10000
+    private var uploadTypeAboveL = true
+    private lateinit var uploadMessage: ValueCallback<Uri>
+    private lateinit var uploadMessageAboveL: ValueCallback<Array<Uri>>
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == FILE_CHOOSER_RESULT_CODE) {
+            val result = if (data == null || resultCode != Activity.RESULT_OK) null else data.data
+            if (uploadTypeAboveL) {
+                onActivityResultAboveL(requestCode, resultCode, data)
+            } else {
+                uploadMessage.onReceiveValue(result)
+            }
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private fun onActivityResultAboveL(requestCode: Int, resultCode: Int, intent: Intent?) {
+        if (requestCode != FILE_CHOOSER_RESULT_CODE)
+            return
+        if (resultCode == Activity.RESULT_OK) {
+            if (intent != null) {
+                val dataString = intent.dataString
+                val clipData = intent.clipData
+                if (clipData != null) {
+                    val count = clipData.itemCount
+                    val results = arrayOf<Uri>()
+                    for (i in 0 until clipData.itemCount) {
+                        val item = clipData.getItemAt(i)
+                        results[i] = item.uri
+                    }
+                    uploadMessageAboveL.onReceiveValue(results)
+                }
+                if (dataString != null) {
+                    uploadMessageAboveL.onReceiveValue(arrayOf(Uri.parse(dataString)))
+                }
+            }
+        }
+    }
+
+}
+

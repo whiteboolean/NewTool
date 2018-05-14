@@ -1,0 +1,21 @@
+package com.mtool.toolslib.base.view.custom.editText;
+
+import android.content.Context;
+import android.util.AttributeSet;
+
+/**
+ * Created by JayCruz on 2017/12/6.
+ */
+
+public class EditTextTool extends EditTextWithDrawableListener {
+
+
+    public EditTextTool(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public EditTextTool(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
+}

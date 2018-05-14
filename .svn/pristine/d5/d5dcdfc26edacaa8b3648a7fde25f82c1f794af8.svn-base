@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- -->
+    <color name="colorPrimary">#f4f4f4</color>
+    <color name="colorPrimaryDark">#c7c7c9</color>
+    <color name="colorAccent">#fc8804</color>
+    <color name="colorAccentDark">#fc7f08</color>
+
+    <color name="divider">#d1d2d1</color>
+    <color name="bg_windows">#FFf5f7f9</color>
+    <color name="red_theme">#de1f29</color>
+
+
+    <color name="vote_red">#ff0349</color>
+    <color name="vote_green">#1bb771</color>
+    <color name="vote_blue">#4990e2</color>
+    <color name="vote_dan">@color/colorAccentDark</color>
+    <color name="vote_shuang">@color/colorAccentDark</color>
+
+
+    <color name="text_primary">#3d3d3d</color>
+    <color name="text_accent">#707070</color>
+    <color name="text_hint">#aaaaaa</color>
+    <color name="text_w">#e6e6e6</color>
+    <color name="text_blue">#2f80ba</color>
+
+
+</resources>

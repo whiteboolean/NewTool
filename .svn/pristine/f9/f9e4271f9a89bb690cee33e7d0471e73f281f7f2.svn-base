@@ -1,0 +1,32 @@
+package com.mtool.toolslib.utils;
+
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+
+/**
+ * Created by JayCruz on 2018/3/9.
+ */
+
+public class CopyUtil {
+    public static void setCopy(Activity act, String str) {
+
+        ClipboardManager clipboardManager = (ClipboardManager) act.getSystemService(Context.CLIPBOARD_SERVICE);
+        clipboardManager.setPrimaryClip(ClipData.newPlainText(null, "内容"));  // 将内容set到剪贴板
+        if (clipboardManager.hasPrimaryClip()) {
+            clipboardManager.getPrimaryClip().getItemAt(0).getText();  // 获取内容
+        }
+
+    }
+
+    public static String getCopy(Activity act) {
+
+        ClipboardManager clipboardManager = (ClipboardManager) act.getSystemService(Context.CLIPBOARD_SERVICE);
+        if (clipboardManager.hasPrimaryClip()) {
+            return clipboardManager.getPrimaryClip().getItemAt(0).getText().toString();  // 获取内容
+        } else {
+            return "";
+        }
+    }
+}

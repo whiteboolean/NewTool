@@ -1,0 +1,13 @@
+package com.mtool.toolslib.network.activity.netkit;
+
+/**
+ * Created by gerry on 2017/5/2.
+ */
+
+public class ApiBase {
+    //230001 ：用户收藏失败
+    //230002 ：用户注册失败
+    //230003（用户原来密码不正确）
+    public static String HOST = null;
+    public static String HOST_FOR_RES = null;
+}

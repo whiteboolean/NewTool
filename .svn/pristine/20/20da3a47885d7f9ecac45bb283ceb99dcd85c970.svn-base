@@ -1,0 +1,30 @@
+package com.mtool.toolslib.utils;
+
+import android.widget.EditText;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * Created by gerry on 2017/8/10.
+ */
+
+public class EditTextUtils {
+    /**
+     * 禁止EditText输入空格
+     *
+     * @param editText
+     */
+    public static void setEditTextInhibitInputSpace(EditText editText) {
+        String replace = editText.getText().toString().replace(" ", "");
+        editText.setText(replace);
+    }
+
+    public static void setEditTextInhibitInputSpe(EditText editText) {
+        String regEx = "[/\\:*?<>|\"\n\t\r%_]"; //要过滤掉的字符
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(editText.getText().toString());
+        String trim = m.replaceAll("").trim();
+        editText.setText(trim);
+    }
+}

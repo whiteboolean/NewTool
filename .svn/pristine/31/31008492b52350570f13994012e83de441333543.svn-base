@@ -1,0 +1,112 @@
+package com.mtool.toolslib.utils;
+
+import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
+/**
+ * Created by gerry on 2017/9/10.
+ */
+
+public class DateUtils {
+
+    /**
+     * 获取当月的 天数
+     */
+    public static String getCurrentMonthDay() {
+        Calendar a = Calendar.getInstance();
+        a.set(Calendar.DATE, 1);
+        a.roll(Calendar.DATE, -1);
+        int maxDate = a.get(Calendar.DATE);
+        return String.valueOf(maxDate);
+    }
+
+    public static String getCurrentMonth() {
+        Calendar cal = Calendar.getInstance();
+        int i = cal.get(Calendar.MONTH) + 1;
+        String s = i < 10 ? "0" : "";
+        return s + i;
+    }
+
+    public static String getCurrentDayOfMonth() {
+        Calendar cal = Calendar.getInstance();
+        int i = cal.get(Calendar.DAY_OF_MONTH);
+        String s = i < 10 ? "0" : "";
+        return s + i;
+    }
+
+    public static String getCurrentYear() {
+        Calendar cal = Calendar.getInstance();
+        return String.valueOf(cal.get(Calendar.YEAR));
+    }
+
+    public static String getCurrentDate() {
+        Calendar cal = Calendar.getInstance();
+        return String.valueOf(cal.get(Calendar.DATE));
+    }
+
+
+    /**
+     * 根据年 月 获取对应的月份 天数
+     */
+    public static int getDaysByYearMonth(int year, int month) {
+
+        Calendar a = Calendar.getInstance();
+        a.set(Calendar.YEAR, year);
+        a.set(Calendar.MONTH, month - 1);
+        a.set(Calendar.DATE, 1);
+        a.roll(Calendar.DATE, -1);
+        int maxDate = a.get(Calendar.DATE);
+        return maxDate;
+    }
+
+    /**
+     * 根据日期 找到对应日期的 星期
+     */
+    public static String getDayOfWeekByDate(String date) {
+        String dayOfweek = "-1";
+        try {
+            SimpleDateFormat myFormatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date myDate = myFormatter.parse(date);
+            SimpleDateFormat formatter = new SimpleDateFormat("E");
+            dayOfweek = formatter.format(myDate);
+
+        } catch (Exception e) {
+            System.out.println("错误!");
+        }
+        return dayOfweek;
+    }
+
+    public static int getIndexOfWeekByDate(String date) {
+        String weekDate = getDayOfWeekByDate(date);
+        String[] week = {"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
+        ArrayList array = new ArrayList<>(Arrays.asList(week));
+
+        return array.indexOf(weekDate);
+    }
+
+    public static Date changeToDateWithSD(String str,SimpleDateFormat sdm) {
+        try {
+            return sdm.parse(str);
+        } catch (Exception ex) {
+            return new Date();
+        }
+    }
+    public static Date changeToDate(String str) {
+        try {
+            return SDM1.parse(str);
+        } catch (Exception ex) {
+            return new Date();
+        }
+    }
+
+    public static final SimpleDateFormat SDM1 = new SimpleDateFormat("yyyyMMddHHmm", Locale.CHINA);
+    public static final SimpleDateFormat SDM2 = new SimpleDateFormat("yyyyMMddHHmmss", Locale.CHINA);
+    public static final SimpleDateFormat SDM3 = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
+    public static final SimpleDateFormat SDM4 = new SimpleDateFormat("MM-dd HH:mm", Locale.CHINA);
+    public static final SimpleDateFormat SDM5 = new SimpleDateFormat("yyyy年MM月", Locale.CHINA);
+}

@@ -1,0 +1,34 @@
+package com.mtool.toolslib.base.core.ext
+
+import android.app.Activity
+import android.content.Intent
+import android.support.v4.app.Fragment
+import android.widget.Toast
+
+/**
+ * Created by JayCruz on 2017/10/14.
+ */
+
+fun Activity.showToastS(msg: String) {
+    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+}
+
+fun Activity.showToastL(msg: String) {
+    Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+}
+
+inline fun <reified T> Activity.startActivity(block: (Intent.() -> Unit)) {
+    val intent = Intent(this, T::class.java)
+    intent.block()
+    startActivity(intent)
+}
+
+inline fun <reified T> Fragment.startActivity(block: (Intent.() -> Unit)) {
+    val intent = Intent(context, T::class.java)
+    intent.block()
+    startActivity(intent)
+}
+
+inline fun <reified T> Fragment.startActivity() {
+    startActivity(Intent(context, T::class.java))
+}

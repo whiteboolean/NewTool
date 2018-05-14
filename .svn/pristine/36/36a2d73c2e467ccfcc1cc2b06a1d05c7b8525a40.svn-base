@@ -1,0 +1,42 @@
+package com.mtool.toolslib.base.view.fragment
+
+
+import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+
+/**
+ * Created by codeest on 2016/8/2.
+ * MVP Fragment基类
+ */
+abstract class BaseFragment : Fragment() {
+
+    val name: String get() = javaClass.simpleName
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        try {
+            initVariable()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return initView(inflater, container, savedInstanceState)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        initDate()
+    }
+
+    protected abstract fun initVariable()
+
+    protected abstract fun initDate()
+
+    protected abstract fun initView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
+
+}

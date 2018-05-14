@@ -1,0 +1,166 @@
+package com.mtool.toolslib.utils;
+
+/**
+ * Created by gerry on 2017/8/8.
+ */
+
+public class UpateUtils {
+//    /**
+//     * 获取服务器更新版本的版本号
+//     */
+//    public void updataVersions() {
+//
+//    }
+//
+//    /**
+//     * 发现新版本,弹出提示框;
+//     *
+//     * @param force
+//     */
+//    private void popupDialog(boolean force) {
+//        if (force) {
+//            new AlertDialog.Builder(this)
+//                    .setMessage("发现新版本,请更新...")
+//                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            //点击确定的话，弹出progressDialog.builder更新进度
+//                            //获取手机内部存贮跟新apk的文职
+//                            saveFileAPK();
+//                            uupdataAPP();
+//
+//                        }
+//                    }).setCancelable(false).show();
+//
+//        } else {
+//            new AlertDialog.Builder(this)
+//                    .setMessage("发现新版本,请更新...")
+//                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            //点击确定的话，弹出progressDialog.builder更新进度
+//                            //获取手机内部存贮跟新apk的文职
+//                            saveFileAPK();
+//                            uupdataAPP();
+//
+//                        }
+//                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    //点击取消的话，boolean变量改为false不更新
+//                    ToastUtil.showShort(MainActivity.this, "取消更新");
+//                    dialog.dismiss();
+//                }
+//            }).setCancelable(false).show();
+//        }
+//    }
+//
+//    /**
+//     * 安装存储在手机内部的更新文件
+//     */
+//    private void installApk() {
+//        Intent intent = new Intent("android.intent.action.INSTALL_PACKAGE");
+//        intent.setData(Uri.parse("file:" + file.getAbsolutePath()));
+//        startActivity(intent);
+//    }
+//
+//    /**
+//     * 联网下载的apk文件存的位置
+//     */
+//    public void saveFileAPK() {
+//        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+//            //SD卡可读写的状态，存到SD卡
+//            File externalFilesDir = getExternalFilesDir(null);
+//            file = new File(externalFilesDir + "/updata.apk");
+//        } else {
+//            //SD卡不可以读写，存到手机内部存储
+//            File filesDir = getFilesDir();
+//            file = new File(filesDir + "/updata.apk");
+//        }
+//        LogUtil.e(file.getAbsolutePath());
+//    }
+//
+//    /**
+//     * 当点击AlertDialog弹出框确认按钮时，调用弹出下载的pregressDialog弹出框
+//     */
+//    private void uupdataAPP() {
+//        progressDialog = new ProgressDialog(this);
+//        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//        progressDialog.show();
+//
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                super.run();
+//
+//                HttpURLConnection coon = null;
+//                InputStream is = null;
+//                FileOutputStream fos = null;
+//                try {
+//                    URL url = new URL(apkUrl);
+//                    coon = (HttpURLConnection) url.openConnection();
+//                    coon.setRequestMethod("GET");//链接方式
+//                    coon.setConnectTimeout(3000);//链接超时等待时间
+//                    coon.setReadTimeout(3000);   //读取超时等待时间
+//                    coon.connect();              //开启链接
+//
+//                    int responseCode = coon.getResponseCode();
+//                    LogUtil.e("返回码：" + responseCode);
+//                    if (responseCode == 200) {
+//                        int contentLength = coon.getContentLength();
+//                        progressDialog.setMax(contentLength);
+//                        LogUtil.e("总进度：" + contentLength);
+//
+//                        is = coon.getInputStream();
+//                        fos = new FileOutputStream(file);
+//                        byte[] b = new byte[1024];
+//                        int len;
+//                        while ((len = is.read(b)) != -1) {
+//                            fos.write(b, 0, len);
+//                            int i = progressDialog.getProgress() + len;
+//                            progressDialog.setProgress(i);
+//                            LogUtil.e("进度：" + i);
+//                        }
+//
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if (progressDialog.getMax() == progressDialog.getProgress()) {
+//                                    installApk();
+//                                    //进入安装界面后，就销毁所有Acitivity，等待安装完成，手动再点击进入app
+//                                    ActicityManager.getActivityManager().deleteAllActivity();
+//                                }
+//                            }
+//                        });
+//                    } else {
+//                        progressDialog.dismiss();
+//                        ToastUtil.showUI(MainActivity.this, "网络异常...");
+//                    }
+//
+//                } catch (MalformedURLException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                } finally {
+//                    if (coon != null) {
+//                        coon.disconnect();
+//                    }
+//                    if (is != null) {
+//                        try {
+//                            is.close();
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                    if (fos != null) {
+//                        try {
+//                            fos.close();
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//            }
+//        }.start();
+//    }
+}

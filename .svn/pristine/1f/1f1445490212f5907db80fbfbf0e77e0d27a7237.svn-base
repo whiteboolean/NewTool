@@ -1,0 +1,103 @@
+package com.mtool.toolslib.network.activity.netkit
+
+//import com.mtool.toolslib.model.netkit.converter.*
+//import com.mtool.toolslib.model.netkit.request.NetKitGetRequest
+//import com.mtool.toolslib.model.netkit.request.NetKitPostRequest
+//
+import android.app.Activity
+import android.app.Fragment
+import com.lzy.okgo.OkGo
+import com.lzy.okgo.callback.Callback
+import com.mtool.toolslib.network.activity.netkit.converter.*
+import com.mtool.toolslib.network.activity.netkit.request.NetKitGetRequest
+import com.mtool.toolslib.network.activity.netkit.request.NetKitPostRequest
+import kotlin.reflect.KClass
+//import com.mtool.toolslib.network.activity.netkit.converter.xArrayConvert as XArrayConvert
+//import com.mtool.toolslib.network.activity.netkit.converter.xObjectConvert as XObjectConvert
+//import com.mtool.toolslib.network.activity.netkit.converter.xPagingConvert as XPagingConvert
+//import com.mtool.toolslib.network.activity.netkit.converter.xStringConvert as XStringConvert
+
+
+/**
+ *
+ * Created by buck on 2017/10/23.
+ */
+
+object NetKit {
+    fun postkt(url: String, mPath: String, tag: Any? = null) = NetKitPostUrl(url, mPath, parseTag(tag))
+
+    fun getkt(url: String, mPath: String, tag: Any? = null) = NetKitGetUrl(url, mPath, parseTag(tag))
+
+    fun cancelkt(tag: Any) = OkGo.cancelTag(OkGo.getInstance().okHttpClient, tag)
+}
+
+fun Any.get(mPath: String, tag: Any? = null, defaultFormat: Boolean = false) = NetKit.getkt(ApiBase.HOST, mPath, tag ?: this)
+fun Any.get(url: String, mPath: String, tag: Any? = null, defaultFormat: Boolean = false) = NetKit.getkt(url, mPath, tag ?: this)
+
+fun Any.post(mPath: String, tag: Any? = null) = NetKit.postkt(ApiBase.HOST, mPath, tag ?: this)
+fun Any.post(url: String, mPath: String, tag: Any? = null) = NetKit.postkt(url, mPath, tag ?: this)
+
+open class NetKitPostUrl(val url: String, val mPath: String, val tag: Any? = null) {
+    open fun <T : Any?> convert(convert: NetKitConvert<out T>) = NetKitPostRequest<T>(url, mPath, convert).tag(tag)
+
+    fun stringConvert() = convert(StringConvert())
+
+    fun <T : Any> objectConvert(kcls: KClass<T>) = convert(ObjectConvert(kcls))
+
+    inline fun <reified T : Any> objectConvert() = convert(ObjectConvert(T::class))
+
+    fun <T : Any> arrayConvert(kcls: KClass<T>) = convert(ArrayConvert(kcls))
+
+    fun <T : Any> byteArrayConvert(kcls: KClass<T>) = convert(ByteArrayConvert())
+//
+//    fun xStringConvert() = convert(XStringConvert())
+//
+//    fun <T : Any> xObjectConvert(kcls: KClass<T>) = convert(XObjectConvert(kcls))
+//
+//    inline fun <reified T : Any> xObjectConvert() = convert(XObjectConvert(T::class))
+//
+//    fun <T : Any> xArrayConvert(kcls: KClass<T>, dataName: String) = convert(XArrayConvert(kcls))
+//
+//    fun <T : Any> xArrayConvert(kcls: KClass<T>) = convert(XArrayConvert(kcls))
+//
+//    inline fun <reified T : Any> xArrayConvert() = convert(XArrayConvert(T::class))
+//
+//    fun <T : Any> xPagingConvert(kcls: KClass<T>, key: String) = convert(XPagingConvert(kcls, key))
+}
+
+class NetKitGetUrl(val url: String, val mPath: String, val tag: Any? = null) {
+    fun <T : Any?> convert(convert: NetKitConvert<out T>) = NetKitGetRequest<T>(url, mPath, convert).tag(tag)
+
+    fun stringConvert() = convert(StringConvert())
+
+    fun <T : Any> objectConvert(kcls: KClass<T>) = convert(ObjectConvert(kcls))
+
+    fun <T : Any> arrayConvert(kcls: KClass<T>) = convert(ArrayConvert(kcls))
+
+    fun <T : Any> byteArrayConvert(kcls: KClass<T>) = convert(ByteArrayConvert())
+
+    fun <T : Any> FileConvert(kcls: KClass<T>) = convert(FileConvert())
+
+//    fun xStringConvert() = convert(XStringConvert())
+//
+//    fun <T : Any> xObjectConvert(kcls: KClass<T>) = convert(XObjectConvert(kcls))
+//
+//    fun <T : Any> xArrayConvert(kcls: KClass<T>) = convert(XArrayConvert(kcls))
+//
+//    fun <T : Any> xPagingConvert(kcls: KClass<T>, key: String) = convert(XPagingConvert(kcls, key))
+}
+
+fun parseTag(tag: Any? = null): Any? {
+    if (tag == null) return null
+    return if ((tag is Activity) or (tag is Fragment) or (tag is android.support.v4.app.Fragment)) tag else null
+}
+
+data class CallbackIgnore(var ignore: Boolean = false) {
+    fun ignore() {
+        ignore = true
+    }
+}
+
+interface DowloadProgress {
+    fun setCallbcak(callback: Callback<*>)
+}

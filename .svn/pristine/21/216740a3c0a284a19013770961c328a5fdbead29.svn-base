@@ -1,0 +1,43 @@
+package com.mtool.toolslib.base.app
+
+import android.content.Context
+import android.media.AudioManager
+import android.net.ConnectivityManager
+import android.support.multidex.MultiDexApplication
+import android.telephony.TelephonyManager
+
+import kotlin.properties.Delegates
+import com.mtool.toolslib.base.view.activity.ActivityManager
+
+/**
+ * Created by gerry on 2016/8/2.
+ */
+open class AppBase : MultiDexApplication() {
+
+    override fun onCreate() {
+        super.onCreate()
+        context = this
+        registerActivityLifecycleCallbacks(ActivityManager.callback)
+
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        ActivityManager.finishAllActivity()
+        ActivityManager.onTerminate()
+    }
+
+
+    companion object {
+        var context: Context by Delegates.notNull()
+
+        fun connectivityManager() = ActivityManager.topContext().getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        fun audioManager() = ActivityManager.topContext().getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        //        fun wifiManager() = ActivityManager.topContext().getSystemService(Context.WIFI_SERVICE) as WifiManager
+        fun telephonyManager() = ActivityManager.topContext().getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+
+        fun packageManager() = ActivityManager.topContext().packageManager
+
+        fun currentVersion() = packageManager().getPackageInfo(ActivityManager.topContext()?.packageName, 0).let { Pair(it.versionCode, it.versionName) }
+    }
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/wb_error"
+        android:id="@+id/err"
+        android:layout_above="@+id/tv_text"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/tv_text"
+        style="@style/text.big"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="页面失联了"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/tv_desc"
+        style="@style/text.small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="攻城狮正在搜索中..."
+        android:layout_below="@+id/tv_text"
+        android:layout_centerHorizontal="true"/>
+
+
+
+</RelativeLayout>

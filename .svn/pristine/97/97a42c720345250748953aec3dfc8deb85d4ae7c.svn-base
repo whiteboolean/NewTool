@@ -1,0 +1,47 @@
+package com.mtool.toolslib.network.activity.activity
+
+import android.os.Bundle
+import com.lzy.okgo.OkGo
+import com.mtool.toolslib.base.view.activity.ToolBarActivity
+import com.mtool.toolslib.network.activity.netkit.delegate.RequestDelegateController
+import io.reactivex.disposables.CompositeDisposable
+
+/**
+ * 添加分页列表分页请求的activity
+ *
+ *
+ * Created by buck on 2017/10/1.
+ */
+abstract class BaseStylesActivity : ToolBarActivity() {
+    val disposable = CompositeDisposable()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setSupportBack()
+        requestDelegatesData()
+    }
+
+
+    override fun initVariable() {}
+
+    override fun initData() {}
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable.clear()
+        OkGo.getInstance().cancelTag(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+    }
+
+    val requestDelegates = mutableListOf<RequestDelegateController>()
+    private fun requestDelegatesData() {
+        for (x in requestDelegates) {
+            x.requestData()
+        }
+    }
+
+
+    fun useRequestDelegate() = RequestDelegateController().also { requestDelegates.add(it) }
+}

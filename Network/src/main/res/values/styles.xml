@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="dialog_anima_default" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/dialog_full_screen_default_in</item>
+        <item name="android:windowExitAnimation">@anim/dialog_full_screen_default_out</item>
+    </style>
+
+    <style name="button_sheet_dialog_transparent" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:colorBackground">@color/transparent</item>
+    </style>
+</resources>

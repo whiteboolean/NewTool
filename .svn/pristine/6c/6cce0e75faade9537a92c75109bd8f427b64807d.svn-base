@@ -1,0 +1,214 @@
+package com.mtool.toolslib.core
+
+import android.animation.Animator
+import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
+import android.view.View
+import android.animation.PropertyValuesHolder
+import android.animation.Animator.AnimatorListener
+import android.util.Log
+import com.mtool.toolslib.core.ObjectAnim.Companion
+import com.mtool.toolslib.core.ObjectAnim.Companion.ANIM_ALPHA
+import com.mtool.toolslib.core.ObjectAnim.Companion.ANIM_BG_COLOR
+import com.mtool.toolslib.core.ObjectAnim.Companion.ANIM_ROTATION
+import com.mtool.toolslib.core.ObjectAnim.Companion.ANIM_ROTATION_X
+import com.mtool.toolslib.core.ObjectAnim.Companion.ANIM_ROTATION_Y
+import com.mtool.toolslib.core.ObjectAnim.Companion.ANIM_SCALE_X
+import com.mtool.toolslib.core.ObjectAnim.Companion.ANIM_SCALE_Y
+import com.mtool.toolslib.core.ObjectAnim.Companion.ANIM_TRANSLAT_X
+import com.mtool.toolslib.core.ObjectAnim.Companion.ANIM_TRANSLAT_Y
+
+
+/**
+ * Created by JayCruz on 2018/3/26.
+ */
+
+class ObjectAnim {
+    companion object {
+        val ANIM_ROTATION = "rotation"
+
+        val ANIM_ROTATION_X = "rotationX"
+
+        val ANIM_ROTATION_Y = "rotationY"
+
+        val ANIM_TRANSLAT_X = "translationX"
+
+        val ANIM_TRANSLAT_Y = "translationY"
+
+        val ANIM_SCALE_X = "scaleX"
+
+        val ANIM_SCALE_Y = "scaleY"
+
+        val ANIM_BG_COLOR = "BackgroundColor"
+
+        val ANIM_ALPHA = "alpha"
+    }
+}
+
+/***
+ *
+ * 字定义组合式动画
+ *
+ * https://blog.csdn.net/harvic880925/article/details/50752838
+ *
+ * Keyframe frame0 = Keyframe.ofFloat(0f, 0);
+ * Keyframe frame1 = Keyframe.ofFloat(0.1f, -20f);
+ * Keyframe frame2 = Keyframe.ofFloat(0.2f, 20f);
+ * Keyframe frame3 = Keyframe.ofFloat(0.3f, -20f);
+ * Keyframe frame4 = Keyframe.ofFloat(0.4f, 20f);
+ * Keyframe frame5 = Keyframe.ofFloat(0.5f, -20f);
+ * Keyframe frame6 = Keyframe.ofFloat(0.6f, 20f);
+ * Keyframe frame7 = Keyframe.ofFloat(0.7f, -20f);
+ * Keyframe frame8 = Keyframe.ofFloat(0.8f, 20f);
+ * Keyframe frame9 = Keyframe.ofFloat(0.9f, -20f);
+ * Keyframe frame10 = Keyframe.ofFloat(1, 0);
+ * PropertyValuesHolder frameHolder1 = PropertyValuesHolder.ofKeyframe("rotation", frame0, frame1, frame2, frame3, frame4,frame5, frame6, frame7, frame8, frame9, frame10);
+ * PropertyValuesHolder frameHolder1 = PropertyValuesHolder.ofKeyframe("ScaleX", frame0, frame1, frame2, frame3, frame4,frame5, frame6, frame7, frame8, frame9, frame10);
+ * PropertyValuesHolder frameHolder1 = PropertyValuesHolder.ofKeyframe("ScaleY", frame0, frame1, frame2, frame3, frame4,frame5, frame6, frame7, frame8, frame9, frame10);
+ *
+ * 或是
+ *
+ * val rotationHolder = PropertyValuesHolder.ofFloat("rotation", 60f, -60f, 40f, -40f, -20f, 20f, 10f, -10f, 0f)
+ */
+fun View.animWithMultiProperty(vararg valuesHolder: PropertyValuesHolder): ObjectAnimator {
+    return ObjectAnimator.ofPropertyValuesHolder(this, *valuesHolder)
+}
+/***
+ * 下方全部为 单一动画 方法
+ * ======================================================================================================================================================================================================
+ */
+
+/***
+ * 物件旋转动画
+ */
+fun View.animRotation(degree: Float = 180f, isRotateBack: Boolean = false): ObjectAnimator {
+    return if (isRotateBack) {
+        ObjectAnimator.ofFloat(this, ANIM_ROTATION, 0f, degree, 0f)
+    } else {
+        ObjectAnimator.ofFloat(this, ANIM_ROTATION, 0f, degree)
+    }
+}
+
+/***
+ * 动画监听
+ *
+.animListener(
+animStart = {},
+animEnd = {},
+animCancel = {},
+animRepeat = {}
+)
+ */
+fun ObjectAnimator.animListener(
+        animStart: (animation: Animator) -> Unit,
+        animEnd: (animation: Animator) -> Unit,
+        animCancel: (animation: Animator) -> Unit,
+        animRepeat: (animation: Animator) -> Unit
+) = also {
+    this.addListener(object : Animator.AnimatorListener {
+        override fun onAnimationStart(animation: Animator) {
+            // Do nothing.
+            animStart.invoke(animation)
+        }
+
+        override fun onAnimationEnd(animation: Animator) {
+            animEnd.invoke(animation)
+        }
+
+        override fun onAnimationCancel(animation: Animator) {
+            animCancel.invoke(animation)
+        }
+
+        override fun onAnimationRepeat(animation: Animator) {
+            animRepeat.invoke(animation)
+        }
+    })
+    return this
+}
+
+/***
+ * 动画执行 时间配置
+ */
+fun ObjectAnimator.animDurationSec(durationSec: Long = 2) = also {
+    this.duration = durationSec * 1000
+    return this
+}
+
+
+/***
+ * 物件旋转动画
+ * 固定 X轴 轴心
+ */
+fun View.animRotationXaxis(degree: Float = 270f, isRotateBack: Boolean = false): ObjectAnimator {
+    return if (isRotateBack) {
+        ObjectAnimator.ofFloat(this, ANIM_ROTATION_X, 0f, degree, 0f)
+    } else {
+        ObjectAnimator.ofFloat(this, ANIM_ROTATION_X, 0f, degree)
+    }
+}
+
+/***
+ * 物件旋转动画
+ * 固定 Y轴 轴心
+ */
+fun View.animRotationYaxis(degree: Float = 270f, isRotateBack: Boolean = false): ObjectAnimator {
+    return if (isRotateBack) {
+        ObjectAnimator.ofFloat(this, ANIM_ROTATION_Y, 0f, degree, 0f)
+    } else {
+        ObjectAnimator.ofFloat(this, ANIM_ROTATION_Y, 0f, degree)
+    }
+}
+
+/***
+ * 物件水瓶移动动画
+ */
+fun View.animTransactionX(vararg xPath: Float): ObjectAnimator {
+    return ObjectAnimator.ofFloat(this, ANIM_TRANSLAT_X, *xPath)
+}
+
+/***
+ * 物件水瓶移动动画
+ */
+fun View.animTransactionY(vararg yPath: Float): ObjectAnimator {
+    return ObjectAnimator.ofFloat(this, ANIM_TRANSLAT_Y, *yPath)
+}
+
+
+/***
+ * 物件水平移动动画
+ */
+fun View.animScaleX(vararg scaleX: Float): ObjectAnimator {
+    return ObjectAnimator.ofFloat(this, ANIM_SCALE_X, *scaleX)
+}
+
+/***
+ * 物件垂直移动动画
+ */
+fun View.animScaleY(vararg scaleY: Float): ObjectAnimator {
+    return ObjectAnimator.ofFloat(this, ANIM_SCALE_Y, *scaleY)
+}
+
+/***
+ * 物件背景颜色更换动画
+ */
+fun View.animBackgroundColor(vararg colorSet: Int): ObjectAnimator {
+    val animator = ObjectAnimator.ofInt(this, ANIM_BG_COLOR, *colorSet)
+    animator.setEvaluator(ArgbEvaluator())
+    return animator
+}
+
+/***
+ * 物件消失及出现动画
+ */
+fun View.animAlpha(alpha: Float = 0f, isShowBack: Boolean = false): ObjectAnimator {
+    return if (isShowBack) {
+        ObjectAnimator.ofFloat(this, ANIM_ALPHA, 1f, alpha, 1f)
+    } else {
+        ObjectAnimator.ofFloat(this, ANIM_ALPHA, 1f, alpha)
+    }
+}
+
+/***
+ * 下方全部为 单一动画 方法
+ * ======================================================================================================================================================================================================
+ */

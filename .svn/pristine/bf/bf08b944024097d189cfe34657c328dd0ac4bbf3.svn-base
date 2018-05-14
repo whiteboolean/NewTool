@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cnine_loading_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:padding="20dp">
+
+        <ProgressBar
+            android:id="@+id/process"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:indeterminateDrawable="@drawable/drawable_progress_rotate_bar" />
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tv"
+        style="@style/text_big"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/colorAccentDark"
+        android:textSize="@dimen/Dim18" />
+</LinearLayout>

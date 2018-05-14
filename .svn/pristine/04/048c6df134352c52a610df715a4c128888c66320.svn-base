@@ -1,0 +1,60 @@
+package com.mtool.toolslib.base.view.activity
+
+import android.content.pm.ActivityInfo
+import android.os.Build
+import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.view.Window
+import android.view.WindowManager
+import java.lang.Exception
+
+//import com.umeng.analytics.MobclickAgent
+
+/**
+ * Created by gerry on 2017/4/29.
+ */
+
+abstract class BaseActivity : AppCompatActivity() {
+
+    val mAct: BaseActivity get() = this
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        try {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS)
+            }
+            setDefaultOrientation()
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+            super.onCreate(savedInstanceState)
+            initView()
+            initVariable()
+            initData()
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            finish()
+        }
+    }
+
+    open protected fun setDefaultOrientation() {
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    }
+
+    public override fun onResume() {
+        super.onResume()
+    }
+
+    public override fun onPause() {
+        super.onPause()
+    }
+
+
+    protected abstract fun initVariable()
+
+    protected abstract fun initData()
+
+    protected abstract fun initView()
+
+
+}

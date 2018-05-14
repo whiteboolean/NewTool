@@ -1,0 +1,44 @@
+package com.mtool.toolslib.view.base
+
+import android.app.Notification
+import android.content.Context
+import android.content.Intent
+import android.os.Handler
+import android.util.Log
+import android.widget.RemoteViews
+import android.widget.Toast
+import com.mtool.toolslib.R
+import com.mtool.toolslib.base.app.AppNetWork
+import com.mtool.toolslib.utils.FontUtil
+import java.util.HashMap
+
+/**
+ * Created by JayCruz on 2017/12/17.
+ */
+open class AppTools : AppNetWork() {
+
+    override fun onCreate() {
+        super.onCreate()
+        context = this
+        initFont()
+    }
+
+
+    /**
+     * 設定初始字體
+     */
+    private fun initFont() {
+
+        FontUtil.setDefaultFont(this, "DEFAULT", "fonts/gen_shin_gothic_regular.ttf")
+        FontUtil.setDefaultFont(this, "MONOSPACE", "fonts/gen_shin_gothic_regular.ttf")
+        FontUtil.setDefaultFont(this, "SERIF", "fonts/gen_shin_gothic_regular.ttf")
+        FontUtil.setDefaultFont(this, "SANS_SERIF", "fonts/gen_shin_gothic_regular.ttf")
+
+//        FontUtil.setDefaultFont(this, "DEFAULT", "fonts/hiragino_sans_gb_w3.ttf")
+//        FontUtil.setDefaultFont(this, "MONOSPACE", "fonts/hiragino_sans_gb_w3.ttf")
+//        FontUtil.setDefaultFont(this, "SERIF", "fonts/hiragino_sans_gb_w3.ttf")
+//        FontUtil.setDefaultFont(this, "SANS_SERIF", "fonts/hiragino_sans_gb_w3.ttf")
+    }
+
+
+}

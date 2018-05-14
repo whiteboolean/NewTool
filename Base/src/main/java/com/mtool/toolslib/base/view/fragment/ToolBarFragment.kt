@@ -1,0 +1,30 @@
+package com.mtool.toolslib.base.view.fragment
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.mtool.toolslib.base.R
+import com.mtool.toolslib.base.view.custom.toolbar.ToolBaeStylesImpl
+import com.mtool.toolslib.base.view.custom.toolbar.ToolBar
+import com.mtool.toolslib.base.view.custom.toolbar.ToolBarStyles
+
+/**
+ * Created by buck on 2017/10/15.
+ */
+
+abstract class ToolBarFragment(toolBarImpl: ToolBarStyles = ToolBaeStylesImpl()) : BaseFragment(), ToolBarStyles by toolBarImpl {
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = initView(inflater, container, savedInstanceState)
+        checkToolbar(view)
+        return view
+    }
+
+
+
+    private fun checkToolbar(view: View) {
+        toolbar = view.findViewById<ToolBar>(R.id.toolbar)
+        act = activity
+    }
+}

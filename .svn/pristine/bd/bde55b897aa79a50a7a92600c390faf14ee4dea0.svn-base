@@ -1,0 +1,292 @@
+<resources xmlns:android="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+
+    <style name="Text" />
+
+    <style name="Text.Toolbar" />
+
+    <style name="Text.Toolbar.Title">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">50dp</item>
+    </style>
+
+    <style name="Text.Toolbar.Title_bigger">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">50dp</item>
+    </style>
+
+    <style name="TranslucentNoTitle" parent="android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+    </style>
+    <!-- 默认套件-->
+
+    <style name="adapteritem_lv">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingRight">13dp</item>
+        <item name="android:paddingLeft">13dp</item>
+    </style>
+
+    <style name="listView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:cacheColorHint">@color/transparent</item>
+        <item name="android:choiceMode">singleChoice</item>
+        <item name="android:divider">@color/transparent</item>
+        <item name="android:dividerHeight">0.0dp</item>
+        <item name="android:footerDividersEnabled">false</item>
+        <item name="android:scrollbars">none</item>
+    </style>
+
+    <style name="editText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/Dim14</item>
+        <item name="android:gravity">start|center</item>
+        <item name="android:textColorHint">@color/white</item>
+    </style>
+
+    <!-- 默认字体颜色 -->
+
+    <style name="text_title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="text_title_shadow">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">24sp</item>
+
+        <item name="android:shadowColor">@color/gray</item>
+        <item name="android:shadowDx">2.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">2.0</item>
+    </style>
+
+    <style name="text_header">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black222</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="text_header_shadow">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black222</item>
+        <item name="android:textSize">22sp</item>
+
+        <item name="android:shadowColor">@color/gray</item>
+        <item name="android:shadowDx">2.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">2.0</item>
+    </style>
+
+    <style name="text_biggest">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black222</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="text_biggest_shadow">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black222</item>
+        <item name="android:textSize">20sp</item>
+
+        <item name="android:shadowColor">@color/gray</item>
+        <item name="android:shadowDx">2.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">2.0</item>
+    </style>
+
+    <style name="text_big">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black333</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="text_big_shadow">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black333</item>
+        <item name="android:textSize">18sp</item>
+
+        <item name="android:shadowColor">@color/gray</item>
+        <item name="android:shadowDx">2.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">2.0</item>
+    </style>
+
+    <style name="text_middle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black333</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="text_middle_shadow">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black333</item>
+        <item name="android:textSize">16sp</item>
+
+        <item name="android:shadowColor">@color/gray</item>
+        <item name="android:shadowDx">2.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">2.0</item>
+    </style>
+
+
+    <style name="text_small">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black555</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="text_small_shadow">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black555</item>
+        <item name="android:textSize">14sp</item>
+
+        <item name="android:shadowColor">@color/gray</item>
+        <item name="android:shadowDx">2.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">2.0</item>
+    </style>
+
+
+    <style name="text_smallest">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black666</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="text_smallest_shadow">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black666</item>
+        <item name="android:textSize">12sp</item>
+
+        <item name="android:shadowColor">@color/gray</item>
+        <item name="android:shadowDx">2.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">2.0</item>
+    </style>
+
+    <style name="text_tiny">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black666</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="text_tiny_shadow">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black666</item>
+        <item name="android:textSize">10sp</item>
+
+        <item name="android:shadowColor">@color/gray</item>
+        <item name="android:shadowDx">2.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">2.0</item>
+    </style>
+
+
+    <!-- 左右侧 LABLE LOGO-->
+    <declare-styleable name="LabelView">
+        <attr name="label_distance" format="dimension" />
+        <attr name="label_height" format="dimension" />
+        <attr name="label_strokeWidth" format="dimension" />
+        <attr name="label_backgroundColor" format="color" />
+        <attr name="label_strokeColor" format="color" />
+        <attr name="label_text" format="string" />
+        <attr name="label_textSize" format="dimension" />
+        <attr name="label_textStyle" format="enum">
+            <enum name="NORMAL" value="0" />
+            <enum name="BOLD" value="1" />
+            <enum name="ITALIC" value="2" />
+            <enum name="BOLD_ITALIC" value="3" />
+        </attr>
+        <attr name="label_textColor" format="color" />
+        <attr name="label_visual" format="boolean" />
+        <attr name="label_orientation" format="enum">
+            <enum name="LEFT_TOP" value="1" />
+            <enum name="RIGHT_TOP" value="2" />
+            <enum name="LEFT_BOTTOM" value="3" />
+            <enum name="RIGHT_BOTTOM" value="4" />
+        </attr>
+    </declare-styleable>
+
+    <!-- 切割银行号码-->
+    <declare-styleable name="DivisionEditText">
+        <attr name="divion_enable" format="boolean" />
+        <attr name="divion_totalLength" format="integer" />
+        <attr name="divion_sperator" format="string" />
+        <attr name="divion_type">
+            <enum name="phone" value="1" />
+            <enum name="bank" value="2" />
+            <enum name="money" value="3" />
+        </attr>
+    </declare-styleable>
+
+
+    <declare-styleable name="vSelector">
+        <attr name="mipmap_Normal" format="integer" />
+        <attr name="mipmap_Selected" format="integer" />
+
+        <attr name="color_Normal" format="integer" />
+        <attr name="color_Selected" format="integer" />
+        <attr name="type_show" format="enum">
+            <enum name="COLOR" value="1" />
+            <enum name="IMAGE" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <!-- 提示的弹跳框 ProgressDialog-->
+    <style name="dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+    </style>
+
+    <style name="dialog_full_screen" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+</resources>

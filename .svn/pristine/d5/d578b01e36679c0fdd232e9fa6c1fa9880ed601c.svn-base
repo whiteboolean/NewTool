@@ -1,0 +1,240 @@
+package com.mtool.toolslib.network.activity.netkit.delegate
+
+import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.widget.RecyclerView
+import android.widget.ListView
+import com.mtool.toolslib.base.view.adapter.SuperAdapter
+import com.mtool.toolslib.base.view.adapter.SuperBaseAdapter
+import com.mtool.toolslib.base.view.activity.ActivityManager
+import com.mtool.toolslib.base.view.custom.refresh.RefreshFooterLayout
+import com.mtool.toolslib.network.R
+import com.mtool.toolslib.network.activity.netkit.ApiBase
+import com.mtool.toolslib.network.activity.netkit.parseTag
+
+/**
+ * Created by buck on 2017/10/26.
+ */
+
+class RequestDelegateController {
+
+    private var request: PostRequestDelegate<Any>? = null
+
+    private var recyclerView: RecyclerView? = null
+    private var superAdapter: SuperAdapter<*>? = null
+
+    private var listView: ListView? = null
+    private var superBaseAdapter: SuperBaseAdapter<*>? = null
+
+    private var refreshLayout: SwipeRefreshLayout? = null
+    private var footerView: RefreshFooterLayout? = null
+
+    private var isHeaderRefresh = false
+    private var isFooterRefresh = false
+    private var isInit = false
+
+    private var pageSize = 10
+    private var currentPager = 1
+    private var totalPager = 1
+
+    private var needFooterView = true
+    private var isListView = false
+    private var isRecyclerView = false
+
+    fun post(mPath: String, tag: Any? = null)
+            = PostUrlDelegate(ApiBase.HOST, mPath, parseTag(tag), this)
+
+    fun post(url: String, mPath: String, tag: Any? = null)
+            = PostUrlDelegate(url, mPath, parseTag(tag), this)
+
+    fun setPostRequestDelegate(request: PostRequestDelegate<Any>) {
+        this.request = request
+    }
+
+    fun recyclerView(rv: RecyclerView, adapter: SuperAdapter<*>, refreshLayout: SwipeRefreshLayout? = null) = also {
+        this.recyclerView = rv
+        this.superAdapter = adapter
+        this.refreshLayout = refreshLayout
+        isRecyclerView = true
+
+        currentPager = 1
+        totalPager = 1
+        pageSize = 10
+    }
+
+    fun listView(lv: ListView, adapter: SuperBaseAdapter<*>, refreshLayout: SwipeRefreshLayout? = null) = also {
+        this.listView = lv
+        this.superBaseAdapter = adapter
+        this.refreshLayout = refreshLayout
+        isListView = true
+
+        currentPager = 1
+        totalPager = 1
+        pageSize = 10
+    }
+
+    private fun initListView() {
+        if (needFooterView) {
+            footerView = createFooterView()
+            listView?.adapter = null
+            listView?.addFooterView(footerView, null, false)
+        }
+
+        listView?.adapter = superBaseAdapter
+
+        refreshLayout?.setOnRefreshListener(refreshListener)
+        refreshLayout?.setColorSchemeColors(ActivityManager.topContext().resources.getColor(R.color.colorAccent))
+    }
+
+    private fun initRecyclerView() {
+        if (needFooterView) {
+            footerView = createFooterView()
+            superAdapter?.addFooterView(footerView)
+        }
+
+        recyclerView?.adapter = superAdapter
+
+        refreshLayout?.setOnRefreshListener(refreshListener)
+        refreshLayout?.setColorSchemeColors(ActivityManager.topContext().resources.getColor(R.color.colorAccent))
+    }
+
+    fun setPageingInfo(map: Map<String, Any>) = also {
+        val pageNum = map["pageNum"] ?: 1
+        val pageSize = map["pageSize"] ?: 10
+
+        this.currentPager = pageNum as Int
+        this.pageSize = pageSize as Int
+    }
+
+    fun needFooterRefresh(needFooter: Boolean) = also {
+        needFooterView = needFooter
+    }
+
+    private fun createFooterView(): RefreshFooterLayout {
+        val footer = RefreshFooterLayout(ActivityManager.topContext())
+        footer.setRefreshListener(loadMoreListener)
+        footer.setHasMore(false)
+        return footer
+    }
+
+    /**
+     * 下拉更新
+     */
+    private val refreshListener: () -> Unit = {
+        if (isFooterRefresh) {
+            footerView!!.onLoadComplete()
+            isFooterRefresh = false
+        }
+
+        isHeaderRefresh = true
+        requestData(false)
+    }
+
+    /**
+     * 上拉加载更多
+     */
+    private val loadMoreListener: () -> Unit = {
+        if (isHeaderRefresh) {
+            refreshLayout!!.isRefreshing = false
+            isHeaderRefresh = false
+        }
+
+        isFooterRefresh = true
+
+        requestData(true)
+    }
+
+
+    fun requestData() {
+        if (!isInit) {
+            isInit = true
+            if (isListView) initListView() else if (isRecyclerView) initRecyclerView()
+        }
+        requestData(false)
+    }
+
+    private fun requestData(loadMore: Boolean) {
+        currentPager = if (loadMore) {
+            currentPager + 1
+        } else {
+            currentPager
+        }
+
+        val req = request ?: return
+
+        val nRequest = req.clone()
+                .onStart { request, ignore ->
+                    if (isHeaderRefresh) {
+                        refreshLayout?.isRefreshing = true
+                    }
+                    val start = req.onStart ?: return@onStart
+                    start(request, ignore)
+                }
+                .onSuccess { data, response, extraInfo, ignore ->
+                    if (needFooterView) {
+                        val pagingInfo = extraInfo.pagingInfo()
+
+                        currentPager = pagingInfo.currentPage
+                        totalPager = pagingInfo.totalPage
+                        val hasMore = currentPager < totalPager
+
+                        footerView?.setHasMore(hasMore)
+
+                        if (isHeaderRefresh) {
+                            isHeaderRefresh = false
+                        }
+
+                        if (isFooterRefresh) {
+                            isFooterRefresh = false
+                            footerView?.onLoadComplete()
+                        }
+                    } else {
+                        isHeaderRefresh = false
+                    }
+
+                    /**
+                     * retrun to Success
+                     */
+                    val success = req.onSuccess
+
+                    if (success == null) {
+                        setData(data)
+                    } else {
+                        success(data, response, extraInfo, ignore)
+                    }
+                }
+                .onError { ex, response, extraInfo, ignore ->
+                    footerView?.setError()
+                }
+                .onFinish { extraInfo, ignore ->
+                    refreshLayout?.isRefreshing = false
+
+                    val finish = req.onFinish ?: return@onFinish
+                    finish(extraInfo, ignore)
+                }
+
+        if (needFooterView) {
+            nRequest.updatePaging(currentPager, pageSize)
+        }
+
+        (nRequest as PostRequestDelegate).end2()
+    }
+
+
+    private fun setData(any: Any) {
+        if (isRecyclerView) {
+            val adapter = superAdapter as? SuperAdapter<Object>
+            if (currentPager == 1) {
+                adapter?.setData(any as List<Object>)
+            } else {
+                adapter?.addData(any as List<Object>)
+            }
+        } else if (isListView) {
+            val adapter = superBaseAdapter as? SuperBaseAdapter<Object>
+            if (currentPager == 1) {
+                adapter?.setData(any as List<Object>)
+            } else {
+                adapter?.addData(any as List<Object>)
+            }
+        }
+    }
+}

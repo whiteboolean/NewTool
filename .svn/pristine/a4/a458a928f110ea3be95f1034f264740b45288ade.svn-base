@@ -1,0 +1,20 @@
+package com.mtool.toolslib.utils
+
+import android.app.Activity
+import java.io.File
+
+/**
+ * Created by buck on 2017/10/12.
+ */
+
+class PicturlSelectUtil(val act: Activity) {
+
+    var file: File? = null
+
+
+    init {
+
+    }
+
+
+}

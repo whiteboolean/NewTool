@@ -1,0 +1,112 @@
+package com.mtool.toolslib.base.core.ext
+
+import android.app.*
+import android.app.admin.DevicePolicyManager
+import android.app.job.JobScheduler
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Intent
+import android.net.ConnectivityManager
+import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.app.NotificationCompat
+import android.support.v4.content.ContextCompat
+import android.support.v4.util.Pair
+import android.telephony.TelephonyManager
+import android.util.DisplayMetrics
+import android.view.LayoutInflater
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+
+/**
+ * Created by JayCruz on 2017/10/14.
+ */
+
+inline val Context.displayWidth: Int
+    get() = resources.displayMetrics.widthPixels
+
+
+inline val Context.displayHeight: Int
+    get() = resources.displayMetrics.heightPixels
+
+
+inline val Context.displayMetricks: DisplayMetrics
+    get() = resources.displayMetrics
+
+
+inline val Context.inflater: LayoutInflater
+    get() = LayoutInflater.from(this)
+
+
+inline fun <reified T : Service> Context?.startService() = this?.startService(Intent(this, T::class.java))
+
+inline fun <reified T : Activity> Context.startActivityWithAnimation(enterResId: Int = 0, exitResId: Int = 0) {
+    val intent = Intent(this, T::class.java)
+    val bundle = ActivityOptionsCompat.makeCustomAnimation(this, enterResId, exitResId).toBundle()
+    ContextCompat.startActivity(this, intent, bundle)
+}
+
+fun  Activity.startActivityWithSharedAnimation(intent: Intent, vararg sharedElements: android.support.v4.util.Pair<View, String>) {
+//    val intent = Intent(this, T::class.java)
+    val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(this, *sharedElements).toBundle()
+    ContextCompat.startActivity(this, intent, bundle)
+}
+
+fun Activity.startActivityWithSharedAnimation(intent: Intent, actCompt: ActivityOptionsCompat) {
+    ContextCompat.startActivity(this, intent, actCompt.toBundle())
+}
+
+
+inline fun Context.notification(body: NotificationCompat.Builder.() -> Unit): Notification {
+    val builder = NotificationCompat.Builder(this)
+    builder.body()
+    return builder.build()
+}
+
+/**
+ * Extension method to get inputManager for Context.
+ */
+inline val Context.inputManager: InputMethodManager?
+    get() = getSystemService(Service.INPUT_METHOD_SERVICE) as? InputMethodManager
+/**
+ * Extension method to get notificationManager for Context.
+ */
+inline val Context.notificationManager: NotificationManager?
+    get() = getSystemService(Service.NOTIFICATION_SERVICE) as? NotificationManager
+/**
+ * Extension method to get keyguardManager for Context.
+ */
+inline val Context.keyguardManager: KeyguardManager?
+    get() = getSystemService(Service.KEYGUARD_SERVICE) as? KeyguardManager
+/**
+ * Extension method to get telephonyManager for Context.
+ */
+inline val Context.telephonyManager: TelephonyManager?
+    get() = getSystemService(Service.TELEPHONY_SERVICE) as? TelephonyManager
+/**
+ * Extension method to get devicePolicyManager for Context.
+ */
+inline val Context.devicePolicyManager: DevicePolicyManager?
+    get() = getSystemService(Service.DEVICE_POLICY_SERVICE) as? DevicePolicyManager
+/**
+ * Extension method to get connectivityManager for Context.
+ */
+inline val Context.connectivityManager: ConnectivityManager?
+    get() = getSystemService(Service.CONNECTIVITY_SERVICE) as? ConnectivityManager
+/**
+ * Extension method to get alarmManager for Context.
+ */
+inline val Context.alarmManager: AlarmManager?
+    get() = getSystemService(Service.ALARM_SERVICE) as? AlarmManager
+/**
+ * Extension method to get clipboardManager for Context.
+ */
+inline val Context.clipboardManager: ClipboardManager?
+    get() = getSystemService(Service.CLIPBOARD_SERVICE) as? ClipboardManager
+/**
+ * Extension method to get jobScheduler for Context.
+ */
+inline val Context.jobScheduler: JobScheduler?
+    get() = getSystemService(Service.JOB_SCHEDULER_SERVICE) as? JobScheduler
+
+

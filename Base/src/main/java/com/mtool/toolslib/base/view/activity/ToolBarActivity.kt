@@ -1,0 +1,42 @@
+package com.mtool.toolslib.base.view.activity
+
+import android.support.annotation.LayoutRes
+import android.view.View
+import android.view.ViewGroup
+import com.mtool.toolslib.base.R
+import com.mtool.toolslib.base.view.custom.toolbar.ToolBaeStylesImpl
+import com.mtool.toolslib.base.view.custom.toolbar.ToolBar
+import com.mtool.toolslib.base.view.custom.toolbar.ToolBarStyles
+
+/**
+ * 添加对toobar快速访问封装的Activity
+ *
+ *
+ * Created by buck on 2017/10/1.
+ */
+abstract class ToolBarActivity(private val toolBarImpl: ToolBarStyles = ToolBaeStylesImpl()) : BaseActivity(), ToolBarStyles by toolBarImpl {
+
+    override fun setTitle(title: CharSequence?) {
+        toolBarImpl.setTitle(title)
+    }
+
+    override fun setContentView(view: View) {
+        super.setContentView(view)
+        checkToolbar()
+    }
+
+    override fun setContentView(@LayoutRes layoutResID: Int) {
+        super.setContentView(layoutResID)
+        checkToolbar()
+    }
+
+    override fun setContentView(view: View, params: ViewGroup.LayoutParams) {
+        super.setContentView(view, params)
+        checkToolbar()
+    }
+
+    private fun checkToolbar() {
+        toolbar = findViewById(R.id.toolbar)
+        act = mAct
+    }
+}

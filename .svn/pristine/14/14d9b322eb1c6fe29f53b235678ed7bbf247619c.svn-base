@@ -1,0 +1,21 @@
+package com.mtool.toolslib.base
+
+import com.mtool.toolslib.base.app.AppBase
+
+/**
+ * edit by buck on 2017/10/3.
+ */
+object PxUtils {
+    val DENSITY = AppBase.context.resources.displayMetrics.density
+    val SCALE_DENSITY = AppBase.context.resources.displayMetrics.scaledDensity
+}
+
+fun dp2px(dp: Float) = (dp * PxUtils.DENSITY + 0.5f).toInt()
+
+fun dp2px(dp: Int) = (dp * PxUtils.DENSITY + 0.5f).toInt()
+
+fun px2sp(px: Float) = (px / PxUtils.SCALE_DENSITY + 0.5f).toInt()
+
+fun sp2px(sp: Float) = (sp * PxUtils.SCALE_DENSITY + 0.5f).toInt()
+
+fun px2dp(px: Float) = (px / PxUtils.DENSITY + 0.5f).toInt()
