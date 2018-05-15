@@ -4,7 +4,7 @@
 buildscript {
     apply from: "config.gradle"
 //    apply from: "../kTool/config.gradle"
-//    addRepos(repositories)
+    addRepos(repositories)
     repositories {
         google()
         jcenter()
